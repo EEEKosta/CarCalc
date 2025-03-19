@@ -2,13 +2,28 @@ from apis import get_gas_price, get_power_price
 
 # основной класс, отвечает за всю логику приложения
 class Calculator:
-    def __init__(self, mileage=15000):
+    def __init__(self, mileage=15000, years=3, year_loss=10):
         # сколько км за год
         self.mileage = mileage
         self.cars = {} # Car: Year price
+        self.years = years
+        self.year_loss = year_loss / 100
     # добавить авто
     def add_car(self, car):
-        self.cars[car] = car.year_cost(self.mileage)
+        year_cost = car.year_cost(self.mileage)
+        price_per_year = car.price / self.years
+        left_price = self.get_left_price(car) / self.years
+        self.cars[car] = year_cost + price_per_year - left_price
+
+    def get_left_price(self, car):
+        initial_price = car.price
+        for i in range(self.years):
+            initial_price -= initial_price * self.year_loss
+        return initial_price
+
+    def print_cars(self):
+        for car, year_price in self.cars.items():
+            print(f"{car.name}:\t\t{year_price}")
 
 
 class Car:
