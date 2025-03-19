@@ -13,6 +13,10 @@ class Calculator:
     def power_price(self):
         # TODO: Get price from API
         return 1.2
+    # добавить авто
+    def add_car(self, car):
+        # добавляет авто в list cars[]
+        self.cars.append(car)
 
 class Car:
     def __init__(self, name: str, price: int, fuel_economy: float, service_cost: int, insurance_cost: int):
